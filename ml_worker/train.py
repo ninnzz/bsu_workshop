@@ -1,9 +1,40 @@
 """
 Training Worker
 """
-from typing import Tuple
+from typing import Optional, Tuple
+
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
+
+
+def create_random_forest(
+    n_estimators: int, criterion: str = "gini", max_depth: Optional[int] = None
+) -> RandomForestClassifier:
+    """
+    Creates an instance of the Random forest classifier.
+
+    :param n_estimators:
+    :type n_estimators:
+    :param criterion:
+    :type criterion:
+    :param max_depth:
+    :type max_depth:
+    :return:
+    :rtype:
+    """
+    if not isinstance(n_estimators, int):
+        raise ValueError("Estimators must be integer.")
+
+    if criterion not in ["gini", "entropy", "log_loss"]:
+        raise ValueError("Invalid criterion value.")
+
+    if max_depth is not None:
+        if not isinstance(max_depth, int):
+            raise ValueError("Invalid max depth value.")
+
+    return RandomForestClassifier(
+        n_estimators=n_estimators, criterion=criterion, max_depth=max_depth
+    )
 
 
 def create_mlp(
@@ -26,9 +57,6 @@ def create_mlp(
     :return:
     :rtype:
     """
-    if not batch_size:
-        batch_size = "auto"
-
     if not isinstance(batch_size, int):
         raise ValueError("Invalid batch size value.")
 
@@ -47,3 +75,38 @@ def create_mlp(
         batch_size=batch_size,
         hidden_layer_sizes=hidden_layers,
     )
+
+
+def train(
+    params: dict,
+    model: str = "mlp",
+) -> str:
+    """
+    Trains a model and return the localtion of the model file.
+    :param params:
+    :type params:
+    :param model:
+    :type model:
+    :return:
+    :rtype:
+    """
+
+    if model not in ["mlp", "random_forest"]:
+        raise ValueError("Invalid model type")
+
+    if model == "mlp":
+        create_mlp(
+            activation_function=params["activation"],
+            solver=params["solver"],
+            batch_size=params["batch_size"],
+            hidden_layers=params["hidden_layers"],
+        )
+
+    else:
+        create_random_forest(
+            n_estimators=params["n_estimators"],
+            criterion=params["criterion"],
+            max_depth=params["max_depth"],
+        )
+
+    return ""

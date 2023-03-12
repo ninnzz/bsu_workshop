@@ -4,7 +4,7 @@ version = "0.1.0"
 description = "Workshop codes for BSU MSDS Students"
 authors = ["ninz <nreclarin@gmail.com>"]
 readme = "README.md"
-packages = [{include = "bsu_workshop"}]
+packages = []
 
 [tool.poetry.dependencies]
 python = "^3.9"

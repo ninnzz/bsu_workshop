@@ -3,6 +3,7 @@ Training Worker
 """
 from typing import Optional, Tuple
 
+import numpy as np
 from sklearn.ensemble import RandomForestClassifier
 from sklearn.neural_network import MLPClassifier
 
@@ -78,11 +79,18 @@ def create_mlp(
 
 
 def train(
+    x: np.ndarray,
+    y: np.ndarray,
     params: dict,
     model: str = "mlp",
 ) -> str:
     """
-    Trains a model and return the localtion of the model file.
+    Trains a model and return the location of the model file.
+
+    :param x:
+    :type x:
+    :param y:
+    :type y:
     :param params:
     :type params:
     :param model:
